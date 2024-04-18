@@ -1,0 +1,74 @@
+/*Màn hình 1*/
+#Screen_1 {
+    position: absolute;
+    left: 215px; top: 11px;
+    width: 800px; height: 686px;
+    background-color: rgb(15, 228, 210);
+}
+/*Code css cho nút nhấn*/
+#btt_START_SYS {
+    border: none;
+    background-color: rgb(0, 255, 0);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    width: 120px; height: 40px;
+    left: 900px; top: 10px;
+}
+#btt_STOP_SYS {
+    border: none;
+    background-color: rgb(255, 0, 0);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    width: 120px; height: 40px;
+    left: 1050px; top: 10px;
+}
+
+/*Nút nhấn LƯU*/
+#btt_scrAuto_Save {
+    border: none;
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    width: 120px; height: 40px;
+    left: 180px; top: 100px;
+}
+/*Nút nhấn SỬA*/
+#btt_scrAuto_Edit {
+    border: none;
+    background-color: rgb(255, 0, 0);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    width: 120px; height: 40px;
+    left: 180px; top: 100px;
+}
+
+#Pump_1{
+    display: inline-block;
+    position: absolute;
+    left: 900px; top: 100px;
+}
+#pid_parameters{
+    display: inline-block;
+    position: absolute;
+    left: 850px; top: 200px;
+}

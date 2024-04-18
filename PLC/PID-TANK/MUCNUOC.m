@@ -1,0 +1,15 @@
+clear all;
+load input.mat xx;
+p=xx;
+load output.mat yy;
+t=yy;
+net=newff([minmax(p)],[6 1],{'tansig' 'purelin'},'trainlm');
+net.trainParam.show=50;
+net.trainParam.lr=0.05;
+net.trainParam.epochs=500;
+net.trainParam.goal=1e-3;
+net=train(net,p);
+net=train(net,t);
+a=sim(net,p);
+%plot(p,a,p,a-t,p,t);
+gensim(net,-1);

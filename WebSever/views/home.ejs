@@ -1,0 +1,192 @@
+<html>
+    <!-- Phần Header của Website -->
+
+    <head>
+        <!-- ////////////// GỌI CÁC CSS //////////////  -->
+        <link rel="stylesheet" href= "CSS/login.css">
+        <link rel="stylesheet" href= "CSS/slidebar.css">
+        <link rel="stylesheet" href= "CSS/screen_main.css">
+        <link rel="stylesheet" href= "CSS/screen_1.css">
+        <link rel="stylesheet" href= "CSS/screen_2.css">
+        <!-- ////////////// CHƯƠNG TRÌNH HỆ THỐNG //////////////  -->
+        <title>Scada hệ thống giám sát trên internet</title>
+        <script src="socket.io/socket.io.js"></script>
+        <script src="js/jquery-3.7.1.min.js"></script>
+        <script src="js/plotly-2.8.3.min.js"></script>
+        <script src = "js/FC1_Common.js"></script>
+        <script src = "js/FC2_ScreenMain.js"></script>
+        <script src = "js/FC3_Screen1.js"></script> 
+        <script src = "js/FC4_Screen2.js"></script>
+        <script src = "js/FC5_UserManagement.js"></script>
+        <script>
+            var socket = io("localhost:3000") // IP tĩnh (hoặc IP động, hoặc localhost)
+        </script>
+        <!-- ////////////// CHƯƠNG TRÌNH ĐĂNG NHẬP HỆ THỐNG //////////////  -->
+        <div id="div_login">
+            <div id="id01" class="modal">
+                <form id = "modal-content1" class="modal-content animate">
+                <div id = "img_container" class="imgcontainer">
+                    <span id = "closebtt" onclick="document.getElementById('id01').style.display='none'; logout();" class="close" title="Close Modal">&times;</span>
+                    <img decoding="async" id = "img_avatar" src="images/user.jpg" alt="Avatar" class="avatar">
+                </div>
+
+                <div id = "log_container" class="container">
+                    <label for="uname"><b>Username</b></label>
+                    <input id = "inputuser" type="text" placeholder="Enter Username" name="uname" required>
+
+                    <label for="psw"><b>Password</b></label>
+                    <input id = "inputpass" type="password" placeholder="Enter Password" name="psw" required>
+
+                    <button id = "bttlogin1" type="button" onclick="login();">Login</button>
+                    <label>
+                    <input type="checkbox" checked="checked" name="remember"> Remember me
+                    </label>
+                </div>
+
+                <div id = "login_container" class="container" style="background-color:#f1f1f1">
+                    <button id = "bttcancle" type="button" onclick="document.getElementById('id01').style.display='none'; logout();" class="cancelbtn">Cancel</button>
+                    <span id = "psw" class="psw">Forgot <a href="#">password?</a></span>
+                </div>
+                </form>
+            </div>
+        </div>
+    </head>
+
+    <!-- Phần thân của website -->
+    <body>
+        <!-- ////////////// Code cho slidebar////////////// -->
+        <div id = "slidebar">
+            <!--Nút đăng nhập/đăng xuất-->
+            <button id="bttLogin" class="btn" onclick="login();
+                    window.location.reload();
+            ">ĐĂNG NHẬP</button>
+            <button id="bttLogout" class="btn" onclick="logout();
+            ">ĐĂNG XUẤT</button>
+            <!--Nút chọn màn hình chính-->
+            <button id="btt_Screen_Main" onclick="
+                fn_ScreenChange('Screen_Main','Screen_1','Screen_2');
+            ">GIỚI THIỆU CHUNG</button>
+            <!--Nút chọn màn hình 1-->
+            <button id="btt_Screen_1" onclick="
+                fn_ScreenChange('Screen_1','Screen_Main','Screen_2');
+            ">MÀN HÌNH ĐIỀU KHIỂN</button>
+            <!--Nút chọn màn hình 2-->
+            <button id="btt_Screen_2" onclick="
+                fn_ScreenChange('Screen_2','Screen_Main','Screen_1');
+                fn_Table01_SQL_Show();
+            ">MÀN HÌNH KIỂM TRA DỮ LIỆU</button>
+        </div>
+
+        <!-- //////////////Code cho màn hình chính////////////// -->
+        <div id = "Screen_Main">
+            <p>Đây là màn chính</p>
+        </div>
+        <!-- //////////////Code cho màn hình 1////////////// -->
+        <div id = "Screen_1">
+            <!--REALTIME TREND-->
+            <script>
+                var data_SP_trend = 0;
+                var data_PV_trend = 0;
+
+                socket.on("WebSite_Setpoint",function(data){
+                    data_SP_trend = data;
+                });
+                socket.on("WebSite_PV_Pressure",function(data){
+                    data_PV_trend = data;
+                });
+                
+                Plotly.newPlot('Screen_1', [{
+                    y: [data_SP_trend],
+                    type: 'line',
+                    name: 'SP'
+                }, {
+                    y: [data_PV_trend],
+                    type: 'line',
+                    name: 'PV'
+                }]);
+
+                    var cnt = 0;
+                setInterval(function(){
+                    Plotly.extendTraces('Screen_1',{ y:[[data_SP_trend], [data_PV_trend]]}, [0, 1]);
+                    cnt++;
+                    if(cnt > 300) {
+                        Plotly.relayout('Screen_1',{
+                            xaxis: {
+                                range: [cnt-300,cnt]
+                            }
+                        });
+                    }
+                },1000);
+            </script>
+            <!-- Nút nhấn chạy hệ thống -->
+                <button id="btt_START_SYS" onclick= "socket.emit('Client-send-cmdSys', true);">START</button>
+            <!-- Nút nhấn dừng hệ thống -->
+                <button id="btt_STOP_SYS" onclick= "socket.emit('Client-send-cmdSys', false);">STOP</button>
+                <br /><br />
+            <!-- Tạo bơm có tên là Pump 1 -->
+                <img id = "Pump_1" ><script> fn_SymbolStatus("Pump_1", "Pump1", "WebSite_On_Off") </script>     
+                <br /><br />     
+            <div id="pid_parameters">
+                <!-- //////////////SỬA/LƯU THÔNG SỐ CÀI ĐẶT////////////// -->
+                <!--Các thông số điều chỉnh PID-->
+                    <label>SetPoint</label>
+                    <input id="tbx_SetPoint" disabled="disabled" type="text" />
+                    <script>fn_IOFieldDataShow("WebSite_Setpoint", "tbx_SetPoint", 2)</script> 
+                    <br /><br />
+                    <label>PID Gain</label>
+                    <input id="tbx_PID_Gain" disabled="disabled" type="text" />
+                    <script>fn_IOFieldDataShow("WebSite_PID_Gain", "tbx_PID_Gain", 2)</script> 
+                    <br /><br />    
+                    <label>PID Ti</label>
+                    <input id="tbx_PID_Ti" disabled="disabled" type="text" />
+                    <script>fn_IOFieldDataShow("WebSite_PID_Ti", "tbx_PID_Ti", 2)</script>
+                    <br /><br />
+                    <label>PID Td</label>
+                    <input id="tbx_PID_Td" disabled="disabled" type="text" />
+                    <script>fn_IOFieldDataShow("WebSite_PID_Td", "tbx_PID_Td", 2)</script>
+                    <br /><br />  
+                    <!--Nút nhấn sửa/lưu - Lưu ý: Nút nhấn lưu phải nằm trước nút nhấn sửa-->
+                    <button id="btt_scrAuto_Save" onclick= "fn_Auto_SaveBtt('btt_scrAuto_Save','btt_scrAuto_Edit')">LƯU</button>
+                    <button id="btt_scrAuto_Edit" onclick= "fn_Auto_EditBtt('btt_scrAuto_Save','btt_scrAuto_Edit')">SỬA</button>
+                    <br /><br />             
+                <!--Các tag theo dõi thông số-->
+                    <label>PID Output</label>
+                    <input id="tbx_PID_Output" disabled="disabled" type="text" />
+                    <script>fn_IOFieldDataShow("WebSite_PID_Output", "tbx_PID_Output", 2)</script> 
+                    <br /><br />   
+
+                    <label>PID Freq Hz</label>
+                    <input id="tbx_PID_Freq_Hz" disabled="disabled" type="text" />
+                    <script>fn_IOFieldDataShow("WebSite_PID_Freq_Hz", "tbx_PID_Freq_Hz", 0)</script> 
+                    <br /><br /> 
+
+                    <label>PV Pressure</label>
+                    <input id="tbx_PV_Pressure" disabled="disabled" type="text" />
+                    <script>fn_IOFieldDataShow("WebSite_PV_Pressure", "tbx_PV_Pressure", 2)</script> 
+                    <br /><br />       
+                    </div>
+        </div>
+        <!-- //////////////Code cho màn hình 2////////////// -->
+        <div id = "Screen_2">
+        <!--Table display-->
+        <div id = "div_Table_01">
+            <table id="table_01" >
+                <thead>
+                <tr>
+                    <th>Thời gian</th>
+                    <th>SetPoint</th>
+                    <th>PID OUT</th>
+                    <th>PID Freq Hz</th>
+                    <th>PV Pressure</th>
+                    <th>PID Gain</th>
+                    <th>PID Ti</th>
+                    <th>PID Td</th>
+                    <th>On_Off</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        </div>
+    </body>
+
+</html>
