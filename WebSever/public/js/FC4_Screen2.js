@@ -31,3 +31,30 @@ function fn_table_01(data){
         }
     }
 }
+
+// Tìm kiếm SQL theo khoảng thời gian
+function fn_SQL_By_Time()
+{
+    var val = [document.getElementById('dtpk_Search_Start').value,
+               document.getElementById('dtpk_Search_End').value];
+    socket.emit('msg_SQL_ByTime', val);
+    socket.on('SQL_ByTime', function(data){
+        fn_table_01(data); // Show sdata
+    });
+}
+
+// Hàm chức năng xuất dữ liệu Excel
+function fn_excel(){
+    var linktext = "";
+    var bookname = "";
+    socket.emit("msg_Excel_Report", true);
+    socket.on('send_Excel_Report',function(data){
+        linktext = data[0];
+        bookname = data[1];
+        // Delay save as
+        var delayInMilliseconds = 1000; //Delay 1 second
+        setTimeout(function() {
+            saveAs(linktext, bookname);
+        }, delayInMilliseconds);
+    });
+}

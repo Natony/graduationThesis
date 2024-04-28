@@ -1,30 +1,126 @@
-/*Màn hình 2*/
 #Screen_2 {
     position: absolute;
-    left: 215px; top: 11px;
-    width: 800px; height: 686px;
-    background-color: rgb(15, 228, 210);
+    left: 215px;
+    top: 180px;
+    width: 1300px;
+    height: 650px;
+    border: 1px solid #ccc;
+    display: flex;
 }
 
-/*//////////////Hiển thị dữ liệu bảng 1 - Start/////////////////*/
-#div_Table_01 {
-    position: absolute;
-    left: 14px; top: 45px;
-    width: 700px; height: 400px;
-    overflow-y: scroll;
+.look_up_1 {
+    width: 30%;
+    position: relative;
+    border-right: 1px solid #ccc;
 }
-/*Table*/
-#table_01 {
+.look_up_1 h3{
+    text-align:center;
+    font-size: 30px;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 1px;
+    background-color: blue;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.look_up_1 #lb_Search_Start {
+    color: rgb(26, 24, 24);
+    font-size: 30px;
+    font-weight: normal;
+}
+.look_up_1 #lb_Search_End {
+    color: rgb(26, 24, 24);
+    font-size: 30px;
+    font-weight: normal;
+}
+
+/*Chọn ngày tháng bắt đầu*/
+.look_up_1 #dtpk_Search_Start {
+    text-align: left;
+    font-size: 20px;
+    right: 30px;
+}
+/*Chọn ngày tháng kết thúc*/
+.look_up_1 #dtpk_Search_End {
+    text-align: left;
+    font-size: 20px;
+    right: 30px;
+}
+
+.div_Table_01 {
+    width: 70%;
+    position: relative;
+    border-left: 1px solid #ccc;   
+}
+
+.div_Table_01 h3{
+    text-align:center;
+    font-size: 30px;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 1px;
+    background-color: blue;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/*Nút tìm kiếm*/
+.look_up_1 #btt_Search {
+    border: none;
+    background-color: DodgerBlue;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    width: 105px; height: 30px;
+    left: 50px; 
+    border-radius: 20px;
+}
+
+/*Nút Xuaast Excel*/
+.look_up_1 #btt_Excel {
+    border: none;
+    background-color: rgb(14, 199, 153);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    width: 105px; height: 30px;
+    left: 250px; 
+    border-radius: 20px;
+}
+
+.div_Table_01 #table_01 {
     position: absolute;
     width:100%;
 }
-#table_01 tr{
+.div_Table_01 #table_01 tr{
     cursor: pointer;
 }
-#table_01 tr:hover{background-color: #ddd;}
-#table_01   { overflow: auto; }
-#table_01 thead th { position: sticky; top: 0;  }
+.div_Table_01 #table_01 tr:hover{
+    background-color: #ddd;
+}
+.div_Table_01 #table_01   { 
+    overflow: scroll; 
+}
+.div_Table_01 #table_01 thead th {
+     position: sticky; top: 0;  
+    }
 /* Just common table stuff. Really. */
-#table_01  { border-collapse: collapse; width: 100%; }
-#table_01 th, td { padding: 8px 16px; }
-#table_01 th     { background:#eee; }
+.div_Table_01 #table_01  {
+     border-collapse: collapse; width: 100%; 
+    }
+.div_Table_01 #table_01 th, td { 
+    padding: 8px 16px; 
+    border: 1px solid #ccc;
+}
+.div_Table_01 #table_01 th     {
+     background:#eee; 
+    }

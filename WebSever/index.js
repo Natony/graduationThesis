@@ -194,3 +194,231 @@ io.on("connection", function(socket){
         });
     });
 });
+
+// Tìm kiếm dữ liệu SQL theo khoảng thời gian
+// Mảng xuất dữ liệu Excel
+var SQL_Excel = [];  // Dữ liệu Excel
+io.on("connection", function(socket){
+    socket.on("msg_SQL_ByTime", function(data)
+    {
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset time Việt Nam (GMT7+)
+        // Lấy thời gian tìm kiếm từ date time piker
+        var timeS = new Date(data[0]); // Thời gian bắt đầu
+        var timeE = new Date(data[1]); // Thời gian kết thúc
+        // Quy đổi thời gian ra định dạng cua MySQL
+        var timeS1 = "'" + (new Date(timeS - tzoffset)).toISOString().slice(0, -1).replace("T"," ") + "'";
+        var timeE1 = "'" + (new Date(timeE - tzoffset)).toISOString().slice(0, -1).replace("T"," ") + "'";
+        var timeR = timeS1 + "AND" + timeE1; // Khoảng thời gian tìm kiếm (Time Range)
+
+        var sqltable_Name = "plc_data"; // Tên bảng
+        var dt_col_Name = "date_time";  // Tên cột thời gian
+
+        var Query1 = "SELECT * FROM " + sqltable_Name + " WHERE "+ dt_col_Name + " BETWEEN ";
+        var Query = Query1 + timeR + ";";
+
+        sqlcon.query(Query, function(err, results, fields) {
+            if (err) {
+                console.log(err);
+            } else {
+                const objectifyRawPacket = row => ({...row});
+                const convertedResponse = results.map(objectifyRawPacket);
+                SQL_Excel = convertedResponse; // Xuất báo cáo Excel
+                socket.emit('SQL_ByTime', convertedResponse);
+            }
+        });
+    });
+});
+
+// /////////////////////////////// BÁO CÁO EXCEL ///////////////////////////////
+const Excel = require('exceljs');
+const { CONNREFUSED } = require('dns');
+function fn_excelExport(){
+    // =====================CÁC THUỘC TÍNH CHUNG=====================
+        // Lấy ngày tháng hiện tại
+        let date_ob = new Date();
+        let date = ("0" + date_ob.getDate()).slice(-2);
+        let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+        let year = date_ob.getFullYear();
+        let hours = date_ob.getHours();
+        let minutes = date_ob.getMinutes();
+        let seconds = date_ob.getSeconds();
+        let day = date_ob.getDay();
+        var dayName = '';
+        if(day == 0){dayName = 'Chủ nhật,'}
+        else if(day == 1){dayName = 'Thứ hai,'}
+        else if(day == 2){dayName = 'Thứ ba,'}
+        else if(day == 3){dayName = 'Thứ tư,'}
+        else if(day == 4){dayName = 'Thứ năm,'}
+        else if(day == 5){dayName = 'Thứ sáu,'}
+        else if(day == 6){dayName = 'Thứ bảy,'}
+        else{};
+    // Tạo và khai báo Excel
+    let workbook = new Excel.Workbook()
+    let worksheet =  workbook.addWorksheet('Báo cáo sản xuất', {
+      pageSetup:{paperSize: 9, orientation:'landscape'},
+      properties:{tabColor:{argb:'FFC0000'}},
+    });
+    // Page setup (cài đặt trang)
+    worksheet.properties.defaultRowHeight = 20;
+    worksheet.pageSetup.margins = {
+      left: 0.3, right: 0.25,
+      top: 0.75, bottom: 0.75,
+      header: 0.3, footer: 0.3
+    };
+    // =====================THẾT KẾ HEADER=====================
+    // Logo công ty
+    const imageId1 = workbook.addImage({
+        filename: 'public/images/logoHcmute.png',
+        extension: 'png',
+      });
+    worksheet.addImage(imageId1, 'A1:A3');
+    // Thông tin công ty
+    worksheet.getCell('B1').value = 'Trường Đại Học Sư Phạm Kỹ Thuật Thành phố Hồ Chí Minh';
+    worksheet.getCell('B1').style = { font:{bold: true,size: 14},alignment: {vertical: 'middle'}} ;
+    worksheet.getCell('B2').value = 'Địa chỉ:  Số 1 Võ Văn Ngân, Linh Chiểu, Thủ Đức, Thành Phố Hồ Chí Minh';
+    worksheet.getCell('B3').value = 'Hotline: + 0999 999 999';
+    // Tên báo cáo
+    worksheet.getCell('A5').value = 'BÁO CÁO SẢN XUẤT';
+    worksheet.mergeCells('A5:F5');
+    worksheet.getCell('A5').style = { font:{name: 'Times New Roman', bold: true,size: 16},alignment: {horizontal:'center',vertical: 'middle'}} ;
+    // Ngày in biểu
+    worksheet.getCell('F6').value = "Ngày in biểu: " + dayName + date + "/" + month + "/" + year + " " + hours + ":" + minutes + ":" + seconds;
+    worksheet.getCell('F6').style = { font:{bold: false, italic: true},alignment: {horizontal:'right',vertical: 'bottom',wrapText: false}} ;
+
+    // Tên nhãn các cột
+    var rowpos = 11;
+    var collumName = ["STT","Thời gian", "SetPoint", "PID OUTPUT", "PID Freq Hz", "PV Pressure", "Gain", "Ti", "Td", "On_Off"]
+    worksheet.spliceRows(rowpos, 1, collumName);
+
+    // =====================XUẤT DỮ LIỆU EXCEL SQL=====================
+    // Dump all the data into Excel
+    var rowIndex = 0;
+    SQL_Excel.forEach((e, index) => {
+    // row 1 is the header.
+    rowIndex =  index + rowpos;
+    // worksheet1 collum
+    worksheet.columns = [
+          {key: 'STT'},
+          {key: 'date_time'},
+          {key: 'data_Setpoint'},
+          {key: 'data_PID_Output'},
+          {key: 'data_PID_Freq_Hz'},
+          {key: 'data_PV_Pressure'},
+          {key: 'data_PID_Gain'},
+          {key: 'data_PID_Ti'},
+          {key: 'data_PID_Td'},
+          {key: 'data_On_Off'},
+        ]
+    worksheet.addRow({
+          STT: {
+            formula: index + 1
+          },
+          ...e
+        })
+    })
+    // Lấy tổng số hàng
+    const totalNumberOfRows = worksheet.rowCount;
+    // Tính tổng
+    worksheet.addRow([
+        'Tổng cộng:',
+        '',
+        '',
+      {formula: `=sum(D${rowpos + 1}:D${totalNumberOfRows})`},
+      {formula: `=sum(E${rowpos + 1}:E${totalNumberOfRows})`},
+    ])
+    // Style cho hàng total (Tổng cộng)
+    worksheet.getCell(`A${totalNumberOfRows+1}`).style = { font:{bold: true,size: 12},alignment: {horizontal:'center',}} ;
+    // Tô màu cho hàng total (Tổng cộng)
+    const total_row = ['A','B', 'C', 'D', 'E','F', 'G', 'H', 'I', ' J']
+    total_row.forEach((v) => {
+        worksheet.getCell(`${v}${totalNumberOfRows+1}`).fill = {type: 'pattern',pattern:'solid',fgColor:{ argb:'f2ff00' }}
+})
+
+    // =====================STYLE CHO CÁC CỘT/HÀNG=====================
+    // Style các cột nhãn
+    const HeaderStyle = ['A','B', 'C', 'D', 'E','F', 'G', 'H', 'I', ' J']
+    HeaderStyle.forEach((v) => {
+        worksheet.getCell(`${v}${rowpos}`).style = { font:{bold: true},alignment: {horizontal:'center',vertical: 'middle',wrapText: true}} ;
+        worksheet.getCell(`${v}${rowpos}`).border = {
+          top: {style:'thin'},
+          left: {style:'thin'},
+          bottom: {style:'thin'},
+          right: {style:'thin'}
+        }
+    })
+    // Cài đặt độ rộng cột
+    worksheet.columns.forEach((column, index) => {
+        column.width = 15;
+    })
+    // Set width header
+    worksheet.getColumn(1).width = 12;
+    worksheet.getColumn(2).width = 20;
+    worksheet.getColumn(7).width = 30;
+    worksheet.getColumn(8).width = 30;
+
+    // ++++++++++++Style cho các hàng dữ liệu++++++++++++
+    worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+      var datastartrow = rowpos;
+      var rowindex = rowNumber + datastartrow;
+      const rowlength = datastartrow + SQL_Excel.length
+      if(rowindex >= rowlength+1){rowindex = rowlength+1}
+      const insideColumns = ['A','B', 'C', 'D', 'E','F', 'G', 'H', 'I', ' J']
+    // Tạo border
+      insideColumns.forEach((v) => {
+          // Border
+        worksheet.getCell(`${v}${rowindex}`).border = {
+          top: {style: 'thin'},
+          bottom: {style: 'thin'},
+          left: {style: 'thin'},
+          right: {style: 'thin'}
+        },
+        // Alignment
+        worksheet.getCell(`${v}${rowindex}`).alignment = {horizontal:'center',vertical: 'middle',wrapText: true}
+      })
+    })
+
+
+    // =====================THẾT KẾ FOOTER=====================
+    worksheet.getCell(`F${totalNumberOfRows+2}`).value = 'Ngày …………tháng ……………năm 20………';
+    worksheet.getCell(`F${totalNumberOfRows+2}`).style = { font:{bold: true, italic: false},alignment: {horizontal:'right',vertical: 'middle',wrapText: false}} ;
+
+    worksheet.getCell(`B${totalNumberOfRows+3}`).value = 'Giám đốc';
+    worksheet.getCell(`B${totalNumberOfRows+4}`).value = '(Ký, ghi rõ họ tên)';
+    worksheet.getCell(`B${totalNumberOfRows+3}`).style = { font:{bold: true, italic: false},alignment: {horizontal:'center',vertical: 'bottom',wrapText: false}} ;
+    worksheet.getCell(`B${totalNumberOfRows+4}`).style = { font:{bold: false, italic: true},alignment: {horizontal:'center',vertical: 'top',wrapText: false}} ;
+
+    worksheet.getCell(`D${totalNumberOfRows+3}`).value = 'Trưởng ca';
+    worksheet.getCell(`D${totalNumberOfRows+4}`).value = '(Ký, ghi rõ họ tên)';
+    worksheet.getCell(`D${totalNumberOfRows+3}`).style = { font:{bold: true, italic: false},alignment: {horizontal:'center',vertical: 'bottom',wrapText: false}} ;
+    worksheet.getCell(`D${totalNumberOfRows+4}`).style = { font:{bold: false, italic: true},alignment: {horizontal:'center',vertical: 'top',wrapText: false}} ;
+
+    worksheet.getCell(`F${totalNumberOfRows+3}`).value = 'Người in biểu';
+    worksheet.getCell(`F${totalNumberOfRows+4}`).value = '(Ký, ghi rõ họ tên)';
+    worksheet.getCell(`F${totalNumberOfRows+3}`).style = { font:{bold: true, italic: false},alignment: {horizontal:'center',vertical: 'bottom',wrapText: false}} ;
+    worksheet.getCell(`F${totalNumberOfRows+4}`).style = { font:{bold: false, italic: true},alignment: {horizontal:'center',vertical: 'top',wrapText: false}} ;
+
+    // =====================THỰC HIỆN XUẤT DỮ LIỆU EXCEL=====================
+    // Export Link
+    var currentTime = year + "_" + month + "_" + date + "_" + hours + "h" + minutes + "m" + seconds + "s";
+    var saveasDirect = "Report/Report_" + currentTime + ".xlsx";
+    SaveAslink = saveasDirect; // Send to client
+    var booknameLink = "public/" + saveasDirect;
+
+    var Bookname = "Report_" + currentTime + ".xlsx";
+    // Write book name
+    workbook.xlsx.writeFile(booknameLink)
+
+    // Return
+    return [SaveAslink, Bookname]
+} // Đóng fn_excelExport
+
+// =====================TRUYỀN NHẬN DỮ LIỆU VỚI TRÌNH DUYỆT=====================
+// Truyền nhận dữ liệu với trình duyệt
+io.on("connection", function(socket){
+    socket.on("msg_Excel_Report", function(data)
+    {
+        const [SaveAslink1, Bookname] = fn_excelExport();
+        var data = [SaveAslink1, Bookname];
+        socket.emit('send_Excel_Report', data);
+    });
+});

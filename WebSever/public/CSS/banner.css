@@ -1,0 +1,11 @@
+#banner {
+    position: absolute;
+    top: 0; /* Đặt phần tử ở đầu trang */
+    left: 50%; /* Đặt vị trí left ở giữa màn hình */
+    transform: translateX(-50%); /* Di chuyển phần tử điều chỉnh để nằm chính giữa theo chiều ngang */
+}
+#banner img {
+    width: 600px; /* Đặt chiều rộng của ảnh */
+    height: auto; /* Đặt chiều cao tự động tính toán theo tỉ lệ của ảnh */
+}
+
