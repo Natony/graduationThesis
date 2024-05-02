@@ -1,56 +1,65 @@
-// Danh sách người dùng
 var users = [
     { username: "admin", password: "123456", role: "admin" },
     { username: "user1", password: "1", role: "user" },
     { username: "user2", password: "2", role: "user" }
 ];
+  
+var isLogin;
 
-// Chương trình con
+document.addEventListener('DOMContentLoaded', function() {
+    if (sessionStorage.getItem('isLoggedIn') === 'true') {
+        
+        var currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+        if (currentUser.role === "admin") {
+            document.getElementById('div_login').style.display = 'none';
+            fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_logout');
+        } else if (currentUser.role === "user") {
+            document.getElementById('div_login').style.display = 'none';
+            fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_logout');
+            document.getElementById("btt_Screen_1").disabled = true;
+        }
+    }
+    else if(sessionStorage.getItem('isLoggedIn') === 'false'){
+        loadPage('Screen_logout', 'Screen_Main', 'Screen_1', 'Screen_2');
+        UnableBtt('btt_Screen_Main', 'btt_Screen_1', 'btt_Screen_2' , 'bttLogout');
+        document.getElementById('div_login').style.display = 'block';
+        
+    }
+}); 
+
 function login() {
     var username = document.getElementById("inputuser").value;
     var password = document.getElementById("inputpass").value;
 
-    // Tìm người dùng trong danh sách
     var currentUser = users.find(function(user) {
         return user.username === username && user.password === password;
     });
 
-    // Nếu người dùng tồn tại
-    if (currentUser) {
-        // Lưu thông tin người dùng vào local storage
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        
-        // Cập nhật thời gian cuối cùng của hoạt động
-        localStorage.setItem('lastActivityTime', Date.now());
-
-        // Chuyển đến màn hình tương ứng với vai trò của người dùng
+    if (currentUser) { 
+        sessionStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
         if (currentUser.role === "admin") {
             fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_logout');
         } else if (currentUser.role === "user") {
             fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_logout');
-            document.getElementById("btt_Screen_2").disabled = true;
-        }
-
-        // Ẩn modal đăng nhập
-        document.getElementById('id01').style.display = 'none';
+            document.getElementById("btt_Screen_1").disabled = true;
+        } 
+        document.getElementById('div_login').style.display = 'none';
     } else {
-        window.location.href = ''; // Điều hướng đến trang đăng nhập lại
+
+        document.getElementById('div_login').style.display = 'block';
     }
 }
+
 
 function logout() {
-    // Xoá thông tin người dùng và thời gian cuối cùng của hoạt động từ local storage
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('lastActivityTime');
-
+    
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('currentUser');
     alert("Đăng xuất thành công");
     fn_ScreenChange('Screen_logout', 'Screen_Main', 'Screen_1', 'Screen_2');
+    UnableBtt('btt_Screen_Main', 'btt_Screen_1', 'btt_Screen_2' , 'bttLogout');
 }
 
-// Kiểm tra thời gian cuối cùng của hoạt động và đăng xuất sau 10 phút
-setInterval(function() {
-    var lastActivityTime = localStorage.getItem('lastActivityTime');
-    if (lastActivityTime && (Date.now() - lastActivityTime > 10 * 60 * 1000)) {
-        logout();
-    }
-}, 1000);
+
+

@@ -28,12 +28,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script>
         var socket = io("localhost:3000") // IP tĩnh (hoặc IP động, hoặc localhost)
+        
     </script>
     <!-- ////////////// CHƯƠNG TRÌNH ĐĂNG NHẬP HỆ THỐNG //////////////  -->
     <div id="div_login">
         <div id="id01" class="modal">
             <form id="modal-content1" class="modal-content animate">
-                <div id="img_container" class="imgcontainer">
+                <div id="img_c  ontainer" class="imgcontainer">
                     <span id="closebtt" onclick="document.getElementById('id01').style.display='none'; logout(); "
                         class="close" title="Close Modal">&times;</span>
                     <img decoding="async" id="img_avatar" src="images/user.jpg" alt="Avatar" class="avatar">
@@ -60,7 +61,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div>    
 </head>
 
 <!-- Phần thân của website -->
@@ -105,10 +106,9 @@
             <h2>Ổn định áp suất</h2>
         </div>
     </div>
-    
     <!-- //////////////Code  cho màn hình chính////////////// -->
     <div id="Screen_Main">
-        <p>Đây là màn chính</p>
+        <h3>GIỚI THIỆU</h3>
     </div>
     <!-- //////////////Code cho màn hình 1////////////// -->
     <div id="Screen_1" >
@@ -164,11 +164,11 @@
         <div class="pid_parameters" >
             <h3>PID Parameters</h3>
             <!-- //////////////SỬA/LƯU THÔNG SỐ CÀI ĐẶT////////////// -->
-            <!--Các thông số điều chỉnh PID-->
+            <!--Các thông số điều chỉnh PID-->   
             <label>SetPoint: </label>
             <input id="tbx_SetPoint" disabled="disabled" type="text" />
             <script>fn_IOFieldDataShow("WebSite_Setpoint", "tbx_SetPoint", 2)</script>
-            <br /><br />
+            <br /><br />                
             <label>PV Pressure: </label>
             <input id="tbx_PV_Pressure" disabled="disabled" type="text" />
             <script>fn_IOFieldDataShow("WebSite_PV_Pressure", "tbx_PV_Pressure", 2)</script>
@@ -192,7 +192,7 @@
         </div>
         <div class="OutPut" >
             <h3>OutPut</h3>
-            <!--Các tag theo dõi thông số-->
+            <!--Các tag theo dõi thông số--> 
             <label>PID Output: </label>
             <input id="tbx_PID_Output" disabled="disabled" type="text" />
             <script>fn_IOFieldDataShow("WebSite_PID_Output", "tbx_PID_Output", 2)</script>
@@ -203,7 +203,7 @@
             <br /><br />        
         </div>
     </div>
-    <!-- //////////////Code cho màn hình 2////////////// -->
+    <!-- //////////////Code cho màn hình 2//////a//////// -->
     <div id="Screen_2">
         <div class="look_up_1">
             <h3>Search</h3>
@@ -287,7 +287,7 @@
         
             // Initially collapse the sidebar
             collapseSidebar();
-        });        
+        }); 
     </script>
 </body>
 </html>
