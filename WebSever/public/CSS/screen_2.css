@@ -52,6 +52,7 @@
     width: 70%;
     position: relative;
     border-left: 1px solid #ccc;   
+    overflow-y: scroll;
 }
 
 .div_Table_01 h3{

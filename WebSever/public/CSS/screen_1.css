@@ -33,7 +33,7 @@
 /*Màn hình 1*/
 #Screen_1 {
     position: absolute;
-    left: 215px; top: 150px;
+    left: 215px; top: 180px;
     width: 1300px; height: 750px;
     border: 1px solid #ccc;
     background-color: white;

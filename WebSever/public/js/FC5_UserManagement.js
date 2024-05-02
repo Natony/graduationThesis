@@ -1,41 +1,56 @@
 // Danh sách người dùng
-var admin = ["admin","123456"]
-var user1 = ["user1","1"]
-var user2 = ["user2","2"]
+var users = [
+    { username: "admin", password: "123456", role: "admin" },
+    { username: "user1", password: "1", role: "user" },
+    { username: "user2", password: "2", role: "user" }
+];
 
 // Chương trình con
-function login()
-{
-    var a = document.getElementById("inputuser").value;
-    var b = document.getElementById("inputpass").value;
-    // Admin
-    if (a == admin[0] && b == admin[1])
-    {
-        fn_ScreenChange('Screen_Main','Screen_1','Screen_2');
-        document.getElementById('id01').style.display='none';
-    }
-    // User 1
-    else if (a == user1[0] && b == user1[1])
-    {
-        fn_ScreenChange('Screen_Main','Screen_1','Screen_2');
-        document.getElementById('id01').style.display='none';
-        document.getElementById("btt_Screen_2").disabled = true;
-    }
-    // User 2
-    else if (a == user2[0] && b == user2[1])
-    {
-        fn_ScreenChange('Screen_2','Screen_Main','Screen_1');
-        document.getElementById('id01').style.display='none';
-        document.getElementById("btt_Screen_Main").disabled = true;
-        document.getElementById("btt_Screen_1").disabled = true;
-    }
-    else
-    {
-        window.location.href = '';
+function login() {
+    var username = document.getElementById("inputuser").value;
+    var password = document.getElementById("inputpass").value;
+
+    // Tìm người dùng trong danh sách
+    var currentUser = users.find(function(user) {
+        return user.username === username && user.password === password;
+    });
+
+    // Nếu người dùng tồn tại
+    if (currentUser) {
+        // Lưu thông tin người dùng vào local storage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        // Cập nhật thời gian cuối cùng của hoạt động
+        localStorage.setItem('lastActivityTime', Date.now());
+
+        // Chuyển đến màn hình tương ứng với vai trò của người dùng
+        if (currentUser.role === "admin") {
+            fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_logout');
+        } else if (currentUser.role === "user") {
+            fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_logout');
+            document.getElementById("btt_Screen_2").disabled = true;
+        }
+
+        // Ẩn modal đăng nhập
+        document.getElementById('id01').style.display = 'none';
+    } else {
+        window.location.href = ''; // Điều hướng đến trang đăng nhập lại
     }
 }
-function logout() // Ctrinh login
-{
+
+function logout() {
+    // Xoá thông tin người dùng và thời gian cuối cùng của hoạt động từ local storage
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('lastActivityTime');
+
     alert("Đăng xuất thành công");
-    window.location.href = 'Dev_by_Ngocautomation.com_hot_line_0946463905';
+    fn_ScreenChange('Screen_logout', 'Screen_Main', 'Screen_1', 'Screen_2');
 }
+
+// Kiểm tra thời gian cuối cùng của hoạt động và đăng xuất sau 10 phút
+setInterval(function() {
+    var lastActivityTime = localStorage.getItem('lastActivityTime');
+    if (lastActivityTime && (Date.now() - lastActivityTime > 10 * 60 * 1000)) {
+        logout();
+    }
+}, 1000);

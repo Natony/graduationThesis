@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="CSS/screen_main.css">
     <link rel="stylesheet" href="CSS/screen_1.css">
     <link rel="stylesheet" href="CSS/screen_2.css">
+    <link rel="stylesheet" href="CSS/logout.css">
     <!-- ////////////// CHƯƠNG TRÌNH HỆ THỐNG //////////////  -->
     <title>Scada hệ thống giám sát trên internet</title>
     <script src="socket.io/socket.io.js"></script>
@@ -80,24 +81,31 @@
             <span class="button-text"> Logout</span>
         </button>
         <!--Nút chọn màn hình chính-->
-        <button id="btt_Screen_Main" onclick="fn_ScreenChange('Screen_Main','Screen_1','Screen_2');">
+        <button id="btt_Screen_Main" onclick="fn_ScreenChange('Screen_Main','Screen_1','Screen_2', 'Screen_logout');">
             <i class="fas fa-home"></i> 
             <span class="button-text"> Home</span>
         </button>
         <!--Nút chọn màn hình 1-->
-        <button id="btt_Screen_1" onclick="fn_ScreenChange('Screen_1','Screen_Main','Screen_2');">
+        <button id="btt_Screen_1" onclick="fn_ScreenChange('Screen_1','Screen_Main','Screen_2', 'Screen_logout');">
             <i class="fas fa-tv"></i> 
             <span class="button-text"> Control</span>L
         </button>
         <!--Nút chọn màn hình 2-->
-        <button id="btt_Screen_2" onclick="fn_ScreenChange('Screen_2','Screen_Main','Screen_1');fn_Table01_SQL_Show();">
+        <button id="btt_Screen_2" onclick="fn_ScreenChange('Screen_2','Screen_Main','Screen_1', 'Screen_logout');fn_Table01_SQL_Show();">
             <i class="fas fa-table"></i> 
             <span class="button-text"> Dashboard</span>
         </button>
     </div>
     <div id="banner">
-        <img src="images/Banner0.png" alt="banner">
-    </div>  
+        <div class="image-wrapper">
+            <img src="images/Banner0.png" alt="banner">
+        </div>
+        <div class="text-wrapper">
+            <h1>WEBSITE GIÁM SÁT</h1>
+            <h2>Ổn định áp suất</h2>
+        </div>
+    </div>
+    
     <!-- //////////////Code  cho màn hình chính////////////// -->
     <div id="Screen_Main">
         <p>Đây là màn chính</p>
@@ -233,6 +241,11 @@
                 </thead>
             </table>
         </div>
+    </div>
+    <div id="Screen_logout">
+        <h1>Goodbye!</h1>
+        <p>Thank you for visiting.</p>
+        <img src="images/giphy.gif" alt="">
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

@@ -6,11 +6,12 @@ function myTimer() {
 
 
 // Chương trình con chuyển trang
-function fn_ScreenChange(scr_1, scr_2, scr_3)
+function fn_ScreenChange(scr_1, scr_2, scr_3, scr_4)
 {
     document.getElementById(scr_1).style.visibility = 'visible';   // Hiển thị trang được chọn
     document.getElementById(scr_2).style.visibility = 'hidden';    // Ẩn trang 1
     document.getElementById(scr_3).style.visibility = 'hidden';    // Ẩn trang 2
+    document.getElementById(scr_4).style.visibility = 'hidden';    // Ẩn trang 3
 }
 
 // Hàm chức năng nút sửa/lưu dữ liệu
@@ -18,4 +19,18 @@ function fn_DataEdit(button1, button2)
 {
     document.getElementById(button1).style.zIndex='1';  // Hiển nút 1
     document.getElementById(button2).style.zIndex='0';  // Ẩn nút 2
+}
+
+function fn_LogoutScreen(scr_1, scr_2, scr_3, scr_4){
+    document.getElementById(scr_1).style.visibility = 'visible';   // Hiển thị trang được chọn
+    document.getElementById(scr_2).style.visibility = 'hidden';    // Ẩn trang 1
+    document.getElementById(scr_3).style.visibility = 'hidden';    // Ẩn trang 2  
+    document.getElementById(scr_4).style.visibility = 'hidden';    // Ẩn trang 3 
+}
+function loadPage(scr_1, scr_2, scr_3, scr_4){
+    document.getElementById(scr_1).style.visibility = 'visible';  
+    document.getElementById(scr_2).style.visibility = 'visible';  
+    document.getElementById(scr_3).style.visibility = 'visible';  
+    document.getElementById(scr_4).style.visibility = 'visible';  
+  
 }
