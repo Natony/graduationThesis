@@ -58,6 +58,8 @@ function fn_Auto_SaveBtt(bttSaveID, bttEditID){
     document.getElementById("tbx_PID_Gain").disabled = true;
     document.getElementById("tbx_PID_Ti").disabled = true;
     document.getElementById("tbx_PID_Td").disabled = true;
+
+    updateRealtimeGraph();
 }
 
 // Hàm chức năng đọc dữ liệu lên IO Field
@@ -73,4 +75,23 @@ function fn_IOFieldDataShow(tag, IOField, tofix)
             document.getElementById(IOField).value = data.toFixed(tofix);
         }
     });
+}
+
+function updateRealtimeGraph() {
+    // Gọi lại các dữ liệu cần thiết từ PLC hoặc từ các trường input trong HTML
+    var data_SP_trend = 0;
+    var data_PV_trend = 0;
+
+    // Cập nhật dữ liệu lên đồ thị
+    Plotly.newPlot('plotly_container', [{
+        y: [data_SP_trend],
+        type: 'line',
+        name: 'SP'
+    }, {
+        y: [data_PV_trend],
+        type: 'line',
+        name: 'PV'
+    }]);
+
+    cnt = 0;
 }

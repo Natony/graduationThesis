@@ -28,7 +28,6 @@ function fn_Data_Write(tag,data){
 ///////////////////////////ĐỊNH NGHĨA TAG////////////////////////
 // Khai báo tag
 var WebSite_Setpoint = 'WebSite_Setpoint';
-var WebSite_PID_Output 	= 'WebSite_PID_Output';
 var WebSite_PID_Freq_Hz = 'WebSite_PID_Freq_Hz';
 var WebSite_PV_Pressure = 'WebSite_PV_Pressure';
 var WebSite_PID_Gain = 'WebSite_PID_Gain';
@@ -41,7 +40,6 @@ var sql_insert_Trigger = 'sql_insert_Trigger';
 const TagList = tagBuilder
 .read(sql_insert_Trigger)
 .read(WebSite_Setpoint)
-.read(WebSite_PID_Output)
 .read(WebSite_PID_Freq_Hz)
 .read(WebSite_PV_Pressure)
 .read(WebSite_PID_Gain)
@@ -88,28 +86,24 @@ function fn_sql_insert() {
 
     // Dữ liệu đọc lên từ các tag
     var data_Setpoint = "'" + tagArr[1] + "',";
-    var data_PID_Output = "'" + tagArr[2] + "',";
-    var data_PID_Freq_Hz = "'" + tagArr[3] + "',"; // Corrected comma placement
-    var data_PV_Pressure = "'" + tagArr[4] + "',"; // Corrected comma placement
-    var data_PID_Gain = "'" + tagArr[5] + "',"; // Corrected comma placement
-    var data_PID_Ti = "'" + tagArr[6] + "',"; // Corrected comma placement
-    var data_PID_Td = "'" + tagArr[7] + "',"; // Corrected comma placement
-    var data_On_Off = "'" + tagArr[8] + "'";
+    var data_PID_Freq_Hz = "'" + tagArr[2] + "',"; // Corrected comma placement
+    var data_PV_Pressure = "'" + tagArr[3] + "',"; // Corrected comma placement
+    var data_PID_Gain = "'" + tagArr[4] + "',"; // Corrected comma placement
+    var data_PID_Ti = "'" + tagArr[5] + "',"; // Corrected comma placement
+    var data_PID_Td = "'" + tagArr[6] + "'"; // Corrected comma placement
 
     // Ghi dữ liệu vào SQL
     if (trigger == true && trigger != sqlins_done) { // Replaced single '&' with '&&'
         var sqlins1 = "INSERT INTO " +
             sqltable_Name +
-            " (date_time, data_Setpoint, data_PID_Output, data_PID_Freq_Hz, data_PV_Pressure, data_PID_Gain, data_PID_Ti, data_PID_Td, data_On_Off) VALUES (";
+            " (date_time, data_Setpoint, data_PID_Freq_Hz, data_PV_Pressure, data_PID_Gain, data_PID_Ti, data_PID_Td) VALUES (";
         var sqlins2 = timeNow_toSQL +
             data_Setpoint +
-            data_PID_Output +
             data_PID_Freq_Hz +
             data_PV_Pressure +
             data_PID_Gain +
             data_PID_Ti +
-            data_PID_Td +
-            data_On_Off;
+            data_PID_Td;
         var sqlins = sqlins1 + sqlins2 + ");";
         // Thực hiện ghi dữ liệu vào SQL
         sqlcon.query(sqlins, function(err, result) {
@@ -142,13 +136,12 @@ app.get("/", function(req, res){
 function fn_tag(){
     io.sockets.emit("sql_insert_Trigger", tagArr[0]);    
     io.sockets.emit("WebSite_Setpoint", tagArr[1]);
-    io.sockets.emit("WebSite_PID_Output", tagArr[2]);
-    io.sockets.emit("WebSite_PID_Freq_Hz", tagArr[3]);
-    io.sockets.emit("WebSite_PV_Pressure", tagArr[4]);
-    io.sockets.emit("WebSite_PID_Gain", tagArr[5]);
-    io.sockets.emit("WebSite_PID_Ti", tagArr[6]);
-    io.sockets.emit("WebSite_PID_Td", tagArr[7]);
-    io.sockets.emit("WebSite_On_Off", tagArr[8]);
+    io.sockets.emit("WebSite_PID_Freq_Hz", tagArr[2]);
+    io.sockets.emit("WebSite_PV_Pressure", tagArr[3]);
+    io.sockets.emit("WebSite_PID_Gain", tagArr[4]);
+    io.sockets.emit("WebSite_PID_Ti", tagArr[5]);
+    io.sockets.emit("WebSite_PID_Td", tagArr[6]);
+    io.sockets.emit("WebSite_On_Off", tagArr[7]);
 }
 
 // ++++++++++++++++++++++++++GHI DỮ LIỆU XUỐNG PLC+++++++++++++++++++++++++++
@@ -165,9 +158,6 @@ io.on("connection", function(socket)
 {
     socket.on("cmd_Auto_Edit_Data", function(data){
         fn_Data_Write(WebSite_Setpoint,data[0]);
-        fn_Data_Write(WebSite_PID_Gain,data[1]);
-        fn_Data_Write(WebSite_PID_Ti,data[2]);
-        fn_Data_Write(WebSite_PID_Td,data[3]);
     });
 });
 
@@ -286,8 +276,8 @@ function fn_excelExport(){
     worksheet.getCell('F6').style = { font:{bold: false, italic: true},alignment: {horizontal:'right',vertical: 'bottom',wrapText: false}} ;
 
     // Tên nhãn các cột
-    var rowpos = 11;
-    var collumName = ["STT","Thời gian", "SetPoint", "PID OUTPUT", "PID Freq Hz", "PV Pressure", "Gain", "Ti", "Td", "On_Off"]
+    var rowpos = 9;
+    var collumName = ["STT","Thời gian", "SetPoint", "PID Freq Hz", "PV Pressure", "Gain", "Ti", "Td"]
     worksheet.spliceRows(rowpos, 1, collumName);
 
     // =====================XUẤT DỮ LIỆU EXCEL SQL=====================
@@ -301,13 +291,11 @@ function fn_excelExport(){
           {key: 'STT'},
           {key: 'date_time'},
           {key: 'data_Setpoint'},
-          {key: 'data_PID_Output'},
           {key: 'data_PID_Freq_Hz'},
           {key: 'data_PV_Pressure'},
           {key: 'data_PID_Gain'},
           {key: 'data_PID_Ti'},
           {key: 'data_PID_Td'},
-          {key: 'data_On_Off'},
         ]
     worksheet.addRow({
           STT: {
@@ -329,14 +317,14 @@ function fn_excelExport(){
     // Style cho hàng total (Tổng cộng)
     worksheet.getCell(`A${totalNumberOfRows+1}`).style = { font:{bold: true,size: 12},alignment: {horizontal:'center',}} ;
     // Tô màu cho hàng total (Tổng cộng)
-    const total_row = ['A','B', 'C', 'D', 'E','F', 'G', 'H', 'I', ' J']
+    const total_row = ['A','B', 'C', 'D', 'E','F', 'G', 'H']
     total_row.forEach((v) => {
         worksheet.getCell(`${v}${totalNumberOfRows+1}`).fill = {type: 'pattern',pattern:'solid',fgColor:{ argb:'f2ff00' }}
 })
 
     // =====================STYLE CHO CÁC CỘT/HÀNG=====================
     // Style các cột nhãn
-    const HeaderStyle = ['A','B', 'C', 'D', 'E','F', 'G', 'H', 'I', ' J']
+    const HeaderStyle = ['A','B', 'C', 'D', 'E','F', 'G', 'H']
     HeaderStyle.forEach((v) => {
         worksheet.getCell(`${v}${rowpos}`).style = { font:{bold: true},alignment: {horizontal:'center',vertical: 'middle',wrapText: true}} ;
         worksheet.getCell(`${v}${rowpos}`).border = {
@@ -362,7 +350,7 @@ function fn_excelExport(){
       var rowindex = rowNumber + datastartrow;
       const rowlength = datastartrow + SQL_Excel.length
       if(rowindex >= rowlength+1){rowindex = rowlength+1}
-      const insideColumns = ['A','B', 'C', 'D', 'E','F', 'G', 'H', 'I', ' J']
+      const insideColumns = ['A','B', 'C', 'D', 'E','F', 'G', 'H']
     // Tạo border
       insideColumns.forEach((v) => {
           // Border
