@@ -33,8 +33,14 @@ var WebSite_PV_Pressure = 'WebSite_PV_Pressure';
 var WebSite_PID_Gain = 'WebSite_PID_Gain';
 var WebSite_PID_Ti = 'WebSite_PID_Ti';
 var WebSite_PID_Td = 'WebSite_PID_Td';
-var WebSite_On_Off = 'WebSite_On_Off';
+var WebSite_Man_OnOff = 'WebSite_Man_OnOff';
 var sql_insert_Trigger = 'sql_insert_Trigger';
+var WebSite_Man_Frequency = 'WebSite_Man_Frequency';
+var WebSite_Light_Status = 'WebSite_Light_Status';
+var WebSite_SW_Man_Auto = 'WebSite_SW_Man_Auto';
+var WebSite_Man_Status = 'WebSite_Man_Status';
+var WebSite_Err_Status = 'WebSite_Err_Status';
+var WebSite_FS_Status = 'WebSite_FS_Status';
 
 // Đọc dữ liệu
 const TagList = tagBuilder
@@ -45,7 +51,13 @@ const TagList = tagBuilder
 .read(WebSite_PID_Gain)
 .read(WebSite_PID_Ti)
 .read(WebSite_PID_Td)
-.read(WebSite_On_Off)
+.read(WebSite_Man_OnOff)
+.read(WebSite_Man_Frequency)
+.read(WebSite_Light_Status)
+.read(WebSite_SW_Man_Auto)
+.read(WebSite_Man_Status)
+.read(WebSite_Err_Status)
+.read(WebSite_FS_Status)
 .get();
 
 ///////////////////////////QUÉT DỮ LIỆU////////////////////////
@@ -141,25 +153,51 @@ function fn_tag(){
     io.sockets.emit("WebSite_PID_Gain", tagArr[4]);
     io.sockets.emit("WebSite_PID_Ti", tagArr[5]);
     io.sockets.emit("WebSite_PID_Td", tagArr[6]);
-    io.sockets.emit("WebSite_On_Off", tagArr[7]);
+    io.sockets.emit("WebSite_Man_OnOff", tagArr[7]);
+    io.sockets.emit("WebSite_Man_Frequency", tagArr[8]);
+    io.sockets.emit("WebSite_Light_Status", tagArr[9]);
+    io.sockets.emit("WebSite_SW_Man_Auto", tagArr[10]);
+    io.sockets.emit("WebSite_Man_Status", tagArr[11]);
+    io.sockets.emit("WebSite_Err_Status", tagArr[12]);
+    io.sockets.emit("WebSite_FS_Status", tagArr[13]);
 }
 
 // ++++++++++++++++++++++++++GHI DỮ LIỆU XUỐNG PLC+++++++++++++++++++++++++++
 // MÀN HÌNH ĐIỀU KHIỂN
 // ///////////GHI DỮ LIỆU NÚT NHẤN XUỐNG PLC///////////////////
+// Điều khiên Manual
 io.on("connection", function(socket)
 {
     socket.on("Client-send-cmdSys", function(data){
-		fn_Data_Write(WebSite_On_Off,data);
+		fn_Data_Write(WebSite_Man_OnOff,data);
 	});
 });
-// ///////////GHI DỮ LIỆU CHỈNH SỬA XUỐNG PLC///////////////////
+
+io.on("connection", function(socket)
+{
+    socket.on("cmd_Man_Edit_Data", function(data){
+        fn_Data_Write(WebSite_Man_Frequency,data[0]);
+    });
+});
+
+io.on("connection", function(socket)
+{
+    socket.on("Client-send-cmdSwitch", function(data){
+		fn_Data_Write(WebSite_SW_Man_Auto,data);
+	});
+});
+// Điều chỉnh các thông số PID
 io.on("connection", function(socket)
 {
     socket.on("cmd_Auto_Edit_Data", function(data){
         fn_Data_Write(WebSite_Setpoint,data[0]);
+        fn_Data_Write(WebSite_PID_Gain,data[1]);
+        fn_Data_Write(WebSite_PID_Ti,data[2]);
+        fn_Data_Write(WebSite_PID_Td,data[3]);
     });
 });
+
+
 
 // ///////////GỬI DỮ LIỆU BẢNG TAG ĐẾN CLIENT (TRÌNH DUYỆT)///////////
 io.on("connection", function(socket){
@@ -222,6 +260,7 @@ io.on("connection", function(socket){
 // /////////////////////////////// BÁO CÁO EXCEL ///////////////////////////////
 const Excel = require('exceljs');
 const { CONNREFUSED } = require('dns');
+
 function fn_excelExport(){
     // =====================CÁC THUỘC TÍNH CHUNG=====================
         // Lấy ngày tháng hiện tại

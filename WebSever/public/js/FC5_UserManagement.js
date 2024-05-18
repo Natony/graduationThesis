@@ -12,16 +12,16 @@ document.addEventListener('DOMContentLoaded', function() {
         var currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
         if (currentUser.role === "admin") {
             document.getElementById('div_login').style.display = 'none';
-            fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_logout');
+            fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_3', 'Screen_4', 'Screen_logout');
         } else if (currentUser.role === "user") {
             document.getElementById('div_login').style.display = 'none';
-            fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_logout');
+            fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_3', 'Screen_4', 'Screen_logout');
             document.getElementById("btt_Screen_1").disabled = true;
         }
     }
     else if(sessionStorage.getItem('isLoggedIn') === 'false'){
-        loadPage('Screen_logout', 'Screen_Main', 'Screen_1', 'Screen_2');
-        UnableBtt('btt_Screen_Main', 'btt_Screen_1', 'btt_Screen_2' , 'bttLogout');
+        loadPage('Screen_logout', 'Screen_Main', 'Screen_1', 'Screen_2', 'Screen_3', 'Screen_4');
+        UnableBtt('btt_Screen_Main', 'btt_Screen_1', 'btt_Screen_2', 'btt_Screen_3', 'btt_Screen_4', 'bttLogout');
         document.getElementById('div_login').style.display = 'block';
         
     }
@@ -39,9 +39,9 @@ function login() {
         sessionStorage.setItem('isLoggedIn', 'true');
         sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
         if (currentUser.role === "admin") {
-            fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_logout');
+            fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_3', 'Screen_4', 'Screen_logout');
         } else if (currentUser.role === "user") {
-            fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_logout');
+            fn_ScreenChange('Screen_Main', 'Screen_1', 'Screen_2', 'Screen_3', 'Screen_4', 'Screen_logout');
             document.getElementById("btt_Screen_1").disabled = true;
         } 
         document.getElementById('div_login').style.display = 'none';
@@ -57,8 +57,8 @@ function logout() {
     sessionStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem('currentUser');
     alert("Đăng xuất thành công");
-    fn_ScreenChange('Screen_logout', 'Screen_Main', 'Screen_1', 'Screen_2');
-    UnableBtt('btt_Screen_Main', 'btt_Screen_1', 'btt_Screen_2' , 'bttLogout');
+    fn_ScreenChange('Screen_logout', 'Screen_Main', 'Screen_1', 'Screen_2', 'Screen_3', 'Screen_4');
+    UnableBtt('btt_Screen_Main', 'btt_Screen_1', 'btt_Screen_2', 'btt_Screen_3', 'btt_Screen_4', 'bttLogout');
 }
 
 

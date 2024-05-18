@@ -1,5 +1,3 @@
-
-/*Slide bar chính*/
 #slidebar {
     border-radius: 20px;
     position: fixed;
@@ -8,7 +6,7 @@
     width: 200px;
     height: 686px;
     background-color: black;
-    transition: width 0.3s ease; /* Thêm hiệu ứng chuyển đổi cho width */
+    transition: width 0.3s ease;
 }
 #slidebar.collapsed {
     width: 50px;
@@ -34,65 +32,62 @@
     border-radius: 50%;
 }
 
-/*Nút ĐĂNG NHẬP*/
 #bttLogin {
-    border-radius: 20px; /* Bo góc */
-    background-color: #D3D3D3; /* Màu nền mặc định */
-    color: black; /* Màu văn bản */
-    padding: 12px 24px; /* Kích thước nút */
-    border: none; /* Loại bỏ đường viền */
+    border-radius: 20px;
+    background-color: #D3D3D3;
+    color: black;
+    padding: 12px 24px;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+    transition: background-color 0.3s ease;
     position: absolute;
     width: 150px; height: 40px;
     left: 22px; top: 550px;
 }
 #bttLogin:hover{
-    background-color: #008000; /* Màu nền khi rê chuột vào */
+    background-color: #008000;
 }
-/*Nút ĐĂNG XUẤT*/
+
 #bttLogout {
-    border-radius: 20px; /* Bo góc */
-    background-color: #D3D3D3	; /* Màu nền mặc định */
-    color: black; /* Màu văn bản */
-    padding: 12px 24px; /* Kích thước nút */
-    border: none; /* Loại bỏ đường viền */
+    border-radius: 20px;
+    background-color: #D3D3D3;
+    color: black;
+    padding: 12px 24px;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+    transition: background-color 0.3s ease;
     position: absolute;
     width: 150px; height: 40px;
     left: 22px; top: 600px;
 }
 #bttLogout:hover{
-    background-color: #DC143C; /* Màu nền khi rê chuột vào */
+    background-color: #DC143C;
 }
 
-/*Nút Màn chính*/
 #btt_Screen_Main {
-    border-radius: 20px; /* Bo góc */
-    background-color: #D3D3D3	; /* Màu nền mặc định */
-    color: black; /* Màu văn bản */
-    padding: 12px 24px; /* Kích thước nút */
-    border: none; /* Loại bỏ đường viền */
+    border-radius: 20px;
+    background-color: #D3D3D3;
+    color: black;
+    padding: 12px 24px;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+    transition: background-color 0.3s ease;
     position: absolute;
     width: 150px; height: 40px;
     left: 22px; top: 70px;
 }
 #btt_Screen_Main:hover{
-    background-color: #DC143C; /* Màu nền khi rê chuột vào */
+    background-color: #DC143C;
 }
 
-/*Nút Màn 1*/
 #btt_Screen_1 {
-    border-radius: 20px; /* Bo góc */
-    background-color: #D3D3D3	; /* Màu nền mặc định */
-    color: black; /* Màu văn bản */
-    padding: 12px 24px; /* Kích thước nút */
-    border: none; /* Loại bỏ đường viền */
+    border-radius: 20px;
+    background-color: #D3D3D3;
+    color: black;
+    padding: 12px 24px;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+    transition: background-color 0.3s ease;
     position: absolute;
     width: 150px; height: 40px;
     left: 22px; top: 120px;
@@ -101,15 +96,14 @@
     background-color: #FFFF00;
 }
 
-/*Nút Màn 2*/
 #btt_Screen_2 {
-    border-radius: 20px; /* Bo góc */
-    background-color: #D3D3D3	; /* Màu nền mặc định */
-    color: black; /* Màu văn bản */
-    padding: 12px 24px; /* Kích thước nút */
-    border: none; /* Loại bỏ đường viền */
+    border-radius: 20px;
+    background-color: #D3D3D3;
+    color: black;
+    padding: 12px 24px;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+    transition: background-color 0.3s ease;
     position: absolute;
     width: 150px; height: 40px;
     left: 22px; top: 170px;
@@ -118,4 +112,34 @@
     background-color: #00FFFF;
 }
 
+#btt_Screen_3 {
+    border-radius: 20px;
+    background-color: #D3D3D3;
+    color: black;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    width: 150px; height: 40px;
+    left: 22px; top: 220px;
+}
+#btt_Screen_3:hover{
+    background-color: #FF4500;
+}
 
+#btt_Screen_4 {
+    border-radius: 20px;
+    background-color: #D3D3D3;
+    color: black;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    width: 150px; height: 40px;
+    left: 22px; top: 270px;
+}
+#btt_Screen_4:hover{
+    background-color: #1E90FF;
+}

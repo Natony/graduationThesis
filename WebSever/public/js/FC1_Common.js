@@ -6,12 +6,14 @@ function myTimer() {
 
 
 // Chương trình con chuyển trang
-function fn_ScreenChange(scr_1, scr_2, scr_3, scr_4)
+function fn_ScreenChange(scr_1, scr_2, scr_3, scr_4, scr_5, scr_6)
 {
     document.getElementById(scr_1).style.visibility = 'visible';   // Hiển thị trang được chọn
-    document.getElementById(scr_2).style.visibility = 'hidden';    // Ẩn trang 1
-    document.getElementById(scr_3).style.visibility = 'hidden';    // Ẩn trang 2
-    document.getElementById(scr_4).style.visibility = 'hidden';    // Ẩn trang 3
+    document.getElementById(scr_2).style.visibility = 'hidden';    // Ẩn trang 2
+    document.getElementById(scr_3).style.visibility = 'hidden';    // Ẩn trang 3
+    document.getElementById(scr_4).style.visibility = 'hidden';    // Ẩn trang 4
+    document.getElementById(scr_5).style.visibility = 'hidden';    // Ẩn trang 5
+    document.getElementById(scr_6).style.visibility = 'hidden';    // Ẩn trang 6
 }
 
 // Hàm chức năng nút sửa/lưu dữ liệu
@@ -21,32 +23,39 @@ function fn_DataEdit(button1, button2)
     document.getElementById(button2).style.zIndex='0';  // Ẩn nút 2
 }
 
-function fn_LogoutScreen(scr_1, scr_2, scr_3, scr_4){
+function fn_LogoutScreen(scr_1, scr_2, scr_3, scr_4, scr_5, scr_6){
     document.getElementById(scr_1).style.visibility = 'visible';   // Hiển thị trang được chọn
-    document.getElementById(scr_2).style.visibility = 'hidden';    // Ẩn trang 1
-    document.getElementById(scr_3).style.visibility = 'hidden';    // Ẩn trang 2  
-    document.getElementById(scr_4).style.visibility = 'hidden';    // Ẩn trang 3 
+    document.getElementById(scr_2).style.visibility = 'hidden';    // Ẩn trang 2
+    document.getElementById(scr_3).style.visibility = 'hidden';    // Ẩn trang 3
+    document.getElementById(scr_4).style.visibility = 'hidden';    // Ẩn trang 4 
+    document.getElementById(scr_5).style.visibility = 'hidden';    // Ẩn trang 5
+    document.getElementById(scr_6).style.visibility = 'hidden';    // Ẩn trang 5
 }
 
-function loadPage(scr_1, scr_2, scr_3, scr_4){
+function loadPage(scr_1, scr_2, scr_3, scr_4, scr_5, scr_6){
     document.getElementById(scr_1).style.visibility = 'visible';  
     document.getElementById(scr_2).style.visibility = 'visible';  
     document.getElementById(scr_3).style.visibility = 'visible';  
     document.getElementById(scr_4).style.visibility = 'visible';  
-  
+    document.getElementById(scr_5).style.visibility = 'visible'; 
+    document.getElementById(scr_6).style.visibility = 'visible'; 
 }
 
-function UnableBtt(btt_1, btt_2, btt_3, btt_4){
+function UnableBtt(btt_1, btt_2, btt_3, btt_4, btt_5, btt_6){
     document.getElementById(btt_1).style.display = "none";  
     document.getElementById(btt_2).style.display = "none";
     document.getElementById(btt_3).style.display = "none";
     document.getElementById(btt_4).style.display = "none";
+    document.getElementById(btt_5).style.display = "none";
+    document.getElementById(btt_6).style.display = "none";
 }
-function AbleBtt(btt_1, btt_2, btt_3, btt_4){
+function AbleBtt(btt_1, btt_2, btt_3, btt_4, btt_5, btt_5){
     document.getElementById(btt_1).style.display = "block";  
     document.getElementById(btt_2).style.display = "block";
     document.getElementById(btt_3).style.display = "block";
     document.getElementById(btt_4).style.display = "block";
+    document.getElementById(btt_5).style.display = "block";
+    document.getElementById(btt_6).style.display = "block";
 }
 
 
