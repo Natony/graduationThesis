@@ -125,7 +125,18 @@
         <h3>GIỚI THIỆU</h3>
     </div>
     <!-- //////////////Code cho màn hình 1////////////// -->
-    <div id="Screen_1" >       
+    <div id="Screen_1" > 
+        <div id="screen_Control">
+            <img src="images/screen_Control.png" >
+            <img id="Pipe_1"><script> fn_SymbolStatus("Pipe_1", "Pipe1", "WebSite_Start_Ivt") </script> 
+            <img id="Pipe_2"><script> fn_SymbolStatus("Pipe_2", "Pipe2", "WebSite_Start_Ivt") </script> 
+            <img id="Pipe_3"><script> fn_SymbolStatus("Pipe_3", "Pipe3", "WebSite_Start_Ivt") </script> 
+            <img id="Pump_2"><script> fn_SymbolStatus("Pump_2", "Pump2", "WebSite_Start_Ivt") </script> 
+            <img id="Pipe_4"><script> fn_SymbolStatus("Pipe_4", "Pipe1", "WebSite_Start_Ivt") </script> 
+            <img id="Pipe_5"><script> fn_SymbolStatus("Pipe_5", "Pipe3", "WebSite_Start_Ivt") </script> 
+            <img id="Pipe_6"><script> fn_SymbolStatus("Pipe_6", "Pipe2", "WebSite_Start_Ivt") </script> 
+            <img id="Flowsensor_1"><script> fn_SymbolStatus("Flowsensor_1", "Flowsensor1", "WebSite_FS_Status") </script> 
+        </div>      
         <br /><br />
         <div class="status_System" >
             <h2>STATUS SYSTEM</h2>
@@ -179,7 +190,7 @@
             <br /><br />   
         </div>
         <div class="control_system" >
-            <h3>ControlPannel</h3>
+            <h3>Manual Control</h3>
             <!-- Nút nhấn chạy hệ thống -->
             <button id="btt_START_SYS" onclick="socket.emit('Client-send-cmdSys', true);">START</button>
             <!-- Nút nhấn dừng hệ thống -->

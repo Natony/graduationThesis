@@ -41,6 +41,7 @@ var WebSite_SW_Man_Auto = 'WebSite_SW_Man_Auto';
 var WebSite_Man_Status = 'WebSite_Man_Status';
 var WebSite_Err_Status = 'WebSite_Err_Status';
 var WebSite_FS_Status = 'WebSite_FS_Status';
+var WebSite_Start_Ivt = 'WebSite_Start_Ivt';
 
 // Đọc dữ liệu
 const TagList = tagBuilder
@@ -58,6 +59,7 @@ const TagList = tagBuilder
 .read(WebSite_Man_Status)
 .read(WebSite_Err_Status)
 .read(WebSite_FS_Status)
+.read(WebSite_Start_Ivt)
 .get();
 
 ///////////////////////////QUÉT DỮ LIỆU////////////////////////
@@ -160,6 +162,7 @@ function fn_tag(){
     io.sockets.emit("WebSite_Man_Status", tagArr[11]);
     io.sockets.emit("WebSite_Err_Status", tagArr[12]);
     io.sockets.emit("WebSite_FS_Status", tagArr[13]);
+    io.sockets.emit("WebSite_Start_Ivt", tagArr[14]);
 }
 
 // ++++++++++++++++++++++++++GHI DỮ LIỆU XUỐNG PLC+++++++++++++++++++++++++++

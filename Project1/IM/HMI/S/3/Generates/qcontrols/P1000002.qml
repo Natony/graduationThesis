@@ -607,8 +607,8 @@ IGuiPage
 	}
 	IGuiButton
 	{
-		id: q486539300
-		objId: 486539300
+		id: q486539297
+		objId: 486539297
 		x: 149
 		y: 445
 		width: 106
@@ -633,8 +633,8 @@ IGuiPage
 	}
 	IGuiButton
 	{
-		id: q486539301
-		objId: 486539301
+		id: q486539298
+		objId: 486539298
 		x: 536
 		y: 445
 		width: 106
@@ -659,8 +659,8 @@ IGuiPage
 	}
 	IGuiButton
 	{
-		id: q486539302
-		objId: 486539302
+		id: q486539299
+		objId: 486539299
 		x: 344
 		y: 445
 		width: 106

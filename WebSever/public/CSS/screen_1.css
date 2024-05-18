@@ -296,3 +296,79 @@
     top: 165px;
     left: 150px;
 }
+
+#screen_Control {
+    position: relative; 
+}
+
+#screen_Control img {
+    position: absolute; 
+    width: 800px;
+    height: 700px;
+    top: 90px; 
+    left: 90px; 
+}
+
+#screen_Control #Pipe_1 {
+    position: absolute; 
+    width: 105px;
+    height: 35px;
+    left: 345px;
+    top: 405px;
+}
+
+#screen_Control #Pipe_2 {
+    position: absolute; 
+    width: 40px;
+    height: 65px;
+    left: 275px;
+    top: 570px;
+}
+
+#screen_Control #Pipe_3 {
+    position: absolute; 
+    width: 70px;    
+    height: 70px;
+    left: 275px;
+    top: 405px;
+}
+
+#screen_Control #Pump_2 {
+    position: absolute; 
+    width: 310px;
+    height: 85px;
+    left: 440px;
+    top: 370px;
+}
+
+#screen_Control #Pipe_4 {
+    position: absolute; 
+    width: 300px;
+    height: 35px;
+    left: 550px;
+    top: 260px;
+}
+
+#screen_Control #Pipe_5 {
+    position: absolute; 
+    width: 70px;    
+    height: 70px;
+    left: 480px;
+    top: 260px;
+}
+
+#screen_Control #Pipe_6 {
+    position: absolute; 
+    width: 37px;
+    height: 40px;
+    left: 480px;
+    top: 330px;
+}
+
+#screen_Control #Flowsensor_1 {
+    position: absolute; 
+    width: 110px;
+    height: 65px;
+    left: 520px;
+    top: 260px;
+}
