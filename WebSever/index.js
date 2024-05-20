@@ -43,6 +43,30 @@ var WebSite_Err_Status = 'WebSite_Err_Status';
 var WebSite_FS_Status = 'WebSite_FS_Status';
 var WebSite_Start_Ivt = 'WebSite_Start_Ivt';
 
+//Alarm
+var sql_Alarm_Trigger1 = 'sql_Alarm_Trigger1';
+var sql_Alarm_Trigger2 = 'sql_Alarm_Trigger2';
+var sql_Alarm_Trigger3 = 'sql_Alarm_Trigger3';
+var sql_Alarm_Trigger4 = 'sql_Alarm_Trigger4';
+var sql_Alarm_Trigger5 = 'sql_Alarm_Trigger5';
+var sql_Alarm_Trigger6 = 'sql_Alarm_Trigger6';
+
+var WebSite_String_Sql1 = 'WebSite_String_Sql1';
+var WebSite_String_Sql2 = 'WebSite_String_Sql2';
+var WebSite_String_Sql3 = 'WebSite_String_Sql3';
+var WebSite_String_Sql4 = 'WebSite_String_Sql4';
+var WebSite_String_Sql5 = 'WebSite_String_Sql5';
+var WebSite_String_Sql6 = 'WebSite_String_Sql6';
+
+//time
+
+var sql_Year ='sql_Year';
+var sql_Month ='sql_Month';
+var sql_Day ='sql_Day';
+var sql_Hour ='sql_Hour';
+var sql_Minute ='sql_Minute';
+var sql_Second ='sql_Second';
+
 // Đọc dữ liệu
 const TagList = tagBuilder
 .read(sql_insert_Trigger)
@@ -60,6 +84,27 @@ const TagList = tagBuilder
 .read(WebSite_Err_Status)
 .read(WebSite_FS_Status)
 .read(WebSite_Start_Ivt)
+//Alarm
+.read(sql_Alarm_Trigger1)
+.read(sql_Alarm_Trigger2)
+.read(sql_Alarm_Trigger3)
+.read(sql_Alarm_Trigger4)
+.read(sql_Alarm_Trigger5)
+.read(sql_Alarm_Trigger6)
+.read(WebSite_String_Sql1)
+.read(WebSite_String_Sql2)
+.read(WebSite_String_Sql3)
+.read(WebSite_String_Sql4)
+.read(WebSite_String_Sql5)
+.read(WebSite_String_Sql6)
+//time
+.read(sql_Year)
+.read(sql_Month)
+.read(sql_Day)
+.read(sql_Hour)
+.read(sql_Minute)
+.read(sql_Second)
+
 .get();
 
 ///////////////////////////QUÉT DỮ LIỆU////////////////////////
@@ -69,10 +114,18 @@ setInterval(
 	1000 //100ms = 1s
 );
 
+
 // Quét dữ liệu
 function fn_read_data_scan(){
 	fn_tagRead();	// Đọc giá trị tag
     fn_sql_insert(); // Ghi dữ liệu vào SQL
+    sendDateTimeParts();// gửi thời gian
+    fn_sql_insert_alarm(sqlins1_done, tagArr[15], tagArr[21], sql_Alarm_Trigger1);
+    fn_sql_insert_alarm(sqlins2_done, tagArr[16], tagArr[22], sql_Alarm_Trigger2);
+    fn_sql_insert_alarm(sqlins3_done, tagArr[17], tagArr[23], sql_Alarm_Trigger3);
+    fn_sql_insert_alarm(sqlins4_done, tagArr[18], tagArr[24], sql_Alarm_Trigger4);
+    fn_sql_insert_alarm(sqlins5_done, tagArr[19], tagArr[25], sql_Alarm_Trigger5);
+    fn_sql_insert_alarm(sqlins6_done, tagArr[20], tagArr[26], sql_Alarm_Trigger6);
 }
 
 //
@@ -85,9 +138,23 @@ var sqlcon = mysql.createConnection({
   password: "123456",
   database: "sql_plc_datn",
   dateStrings:true
-});
+}); 
+
 // Ghi dữ liệu vào SQL
 var sqlins_done = false; // Biến báo đã ghi xong dữ liệu
+var sqlins1_done = false;
+var sqlins2_done = false;
+var sqlins3_done = false;
+var sqlins4_done = false;
+var sqlins5_done = false;
+var sqlins6_done = false;
+
+function getCurrentDateTime() {
+    var tzoffset = (new Date()).getTimezoneOffset() * 60000; // Vùng Việt Nam (GMT7+)
+    var temp_datenow = new Date();
+    var timeNow = (new Date(temp_datenow - tzoffset));
+    return timeNow;
+}
 
 function fn_sql_insert() {
     var trigger = tagArr[0]; // Trigger đọc về từ PLC
@@ -107,7 +174,7 @@ function fn_sql_insert() {
     var data_PID_Td = "'" + tagArr[6] + "'"; // Corrected comma placement
 
     // Ghi dữ liệu vào SQL
-    if (trigger == true && trigger != sqlins_done) { // Replaced single '&' with '&&'
+    if (trigger == true & trigger != sqlins_done) { // Replaced single '&' with '&&'
         var sqlins1 = "INSERT INTO " +
             sqltable_Name +
             " (date_time, data_Setpoint, data_PID_Freq_Hz, data_PV_Pressure, data_PID_Gain, data_PID_Ti, data_PID_Td) VALUES (";
@@ -118,7 +185,8 @@ function fn_sql_insert() {
             data_PID_Gain +
             data_PID_Ti +
             data_PID_Td;
-        var sqlins = sqlins1 + sqlins2 + ");";
+        var sqlins = sqlins1 + sqlins2 + "); ";
+        console.log(sqlins);
         // Thực hiện ghi dữ liệu vào SQL
         sqlcon.query(sqlins, function(err, result) {
             if (err) {
@@ -129,8 +197,25 @@ function fn_sql_insert() {
         });
     }
     sqlins_done = trigger;
+
 }
 
+function fn_sql_insert_alarm(sqlins_done, tagTrigger, sql_excute, tagName){
+    var trigger = tagTrigger;
+    var sqlins = sql_excute;
+
+    if (trigger == true & trigger != sqlins_done) {
+        sqlcon.query(sqlins, function (err, result) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("SQL - Ghi Alarm thành công")
+                fn_Data_Write(tagName, false);
+            }
+        });
+    }
+    sqlins_done = trigger;
+}
 
 // /////////////////////////THIẾT LẬP KẾT NỐI WEB/////////////////////////
 var express = require("express");
@@ -163,7 +248,29 @@ function fn_tag(){
     io.sockets.emit("WebSite_Err_Status", tagArr[12]);
     io.sockets.emit("WebSite_FS_Status", tagArr[13]);
     io.sockets.emit("WebSite_Start_Ivt", tagArr[14]);
+    //Alarm
+    io.sockets.emit("sql_Alarm_Trigger1", tagArr[15]);
+    io.sockets.emit("sql_Alarm_Trigger2", tagArr[16]);
+    io.sockets.emit("sql_Alarm_Trigger3", tagArr[17]);
+    io.sockets.emit("sql_Alarm_Trigger4", tagArr[18]);
+    io.sockets.emit("sql_Alarm_Trigger5", tagArr[19]);
+    io.sockets.emit("sql_Alarm_Trigger6", tagArr[20]);
+
+    io.sockets.emit("WebSite_String_Sql1", tagArr[21]);
+    io.sockets.emit("WebSite_String_Sql2", tagArr[22]);
+    io.sockets.emit("WebSite_String_Sql3", tagArr[23]);
+    io.sockets.emit("WebSite_String_Sql4", tagArr[24]);
+    io.sockets.emit("WebSite_String_Sql5", tagArr[25]);
+    io.sockets.emit("WebSite_String_Sql6", tagArr[26]);
+    //Time
+    io.sockets.emit("sql_Year", tagArr[27]);
+    io.sockets.emit("sql_Month", tagArr[28]);
+    io.sockets.emit("sql_Day", tagArr[29]);
+    io.sockets.emit("sql_Hour", tagArr[30]);
+    io.sockets.emit("sql_Minute", tagArr[31]);
+    io.sockets.emit("sql_Second", tagArr[32]);
 }
+
 
 // ++++++++++++++++++++++++++GHI DỮ LIỆU XUỐNG PLC+++++++++++++++++++++++++++
 // MÀN HÌNH ĐIỀU KHIỂN
@@ -200,6 +307,12 @@ io.on("connection", function(socket)
     });
 });
 
+io.on("connection", function(socket)
+{
+    socket.on("cmd_Auto_Edit_Wait", function(data){
+        fn_Data_Write(WebSite_Edit_Wait,data);
+    });
+});
 
 
 // ///////////GỬI DỮ LIỆU BẢNG TAG ĐẾN CLIENT (TRÌNH DUYỆT)///////////
@@ -226,7 +339,24 @@ io.on("connection", function(socket){
     });
 });
 
-// Tìm kiếm dữ liệu SQL theo khoảng thời gian
+io.on("connection", function(socket){
+    socket.on("msg_SQL2_Show", function(data)
+    {
+        var sqltable_Name = "sql_plc_datn.alarm";
+        var query = "SELECT * FROM " + sqltable_Name + ";"
+        sqlcon.query(query, function(err, results, fields) {
+            if (err) {
+                console.log(err);
+            } else {
+                const objectifyRawPacket = row => ({...row});
+                const convertedResponse = results.map(objectifyRawPacket);
+                socket.emit('SQL2_Show', convertedResponse);
+            }
+        });
+    });
+});
+
+// Tìm kiếm DashBoard
 // Mảng xuất dữ liệu Excel
 var SQL_Excel = [];  // Dữ liệu Excel
 io.on("connection", function(socket){
@@ -260,9 +390,44 @@ io.on("connection", function(socket){
     });
 });
 
+// Tìm kiếm Alarm
+// Mảng xuất dữ liệu Excel
+var SQL2_Excel = [];  // Dữ liệu Excel
+io.on("connection", function(socket){
+    socket.on("msg_SQL2_ByTime", function(data)
+    {
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset time Việt Nam (GMT7+)
+        // Lấy thời gian tìm kiếm từ date time piker
+        var timeS2 = new Date(data[0]); // Thời gian bắt đầu
+        var timeE2 = new Date(data[1]); // Thời gian kết thúc
+        // Quy đổi thời gian ra định dạng cua MySQL
+        var timeS3 = "'" + (new Date(timeS2 - tzoffset)).toISOString().slice(0, -1).replace("T"," ") + "'";
+        var timeE3 = "'" + (new Date(timeE2 - tzoffset)).toISOString().slice(0, -1).replace("T"," ") + "'";
+        var timeR3 = timeS3 + "AND" + timeE3; // Khoảng thời gian tìm kiếm (Time Range)
+
+        var sqltable_Name = "sql_plc_datn.alarm"; // Tên bảng
+        var dt_col_Name = "DateTime";  // Tên cột thời gian
+
+        var Query2 = "SELECT * FROM " + sqltable_Name + " WHERE "+ dt_col_Name + " BETWEEN ";
+        var Query3 = Query2 + timeR3 + ";";
+
+        sqlcon.query(Query3, function(err, results, fields) {
+            if (err) {
+                console.log(err);
+            } else {
+                const objectifyRawPacket = row => ({...row});
+                const convertedResponse = results.map(objectifyRawPacket);
+                socket.emit('SQL2_ByTime', convertedResponse);
+            }
+        });
+    });
+});
+
 // /////////////////////////////// BÁO CÁO EXCEL ///////////////////////////////
 const Excel = require('exceljs');
 const { CONNREFUSED } = require('dns');
+const { time } = require('console');
+const { fn } = require('jquery');
 
 function fn_excelExport(){
     // =====================CÁC THUỘC TÍNH CHUNG=====================
@@ -452,3 +617,22 @@ io.on("connection", function(socket){
         socket.emit('send_Excel_Report', data);
     });
 });
+
+function sendDateTimeParts(){
+    var currentTime = getCurrentDateTime();
+    var year = currentTime.getFullYear();
+    var month = currentTime.getMonth() + 1; // Tháng bắt đầu từ 0
+    var day = currentTime.getDate();
+    var hour = currentTime.getHours();
+    var minute = currentTime.getMinutes();
+    var second = currentTime.getSeconds();
+
+    fn_Data_Write(sql_Year, year);
+    fn_Data_Write(sql_Month, month);
+    fn_Data_Write(sql_Day, day);
+    fn_Data_Write(sql_Hour, hour);
+    fn_Data_Write(sql_Minute, minute);
+    fn_Data_Write(sql_Second, second);
+}
+
+

@@ -10,8 +10,8 @@ IGuiPage
 	height: 480
 	IGuiGraphicView
 	{
-		id: q301989889
-		objId: 301989889
+		id: q301989891
+		objId: 301989891
 		x: 240
 		y: 156
 		width: 187
@@ -550,8 +550,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989890
-		objId: 301989890
+		id: q301989904
+		objId: 301989904
 		x: 240
 		y: 156
 		width: 187
@@ -606,8 +606,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989891
-		objId: 301989891
+		id: q301989896
+		objId: 301989896
 		x: 185
 		y: 198
 		width: 56
@@ -620,8 +620,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989892
-		objId: 301989892
+		id: q301989894
+		objId: 301989894
 		x: 137
 		y: 198
 		width: 48
@@ -634,8 +634,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989893
-		objId: 301989893
+		id: q301989892
+		objId: 301989892
 		x: 137
 		y: 251
 		width: 26
@@ -648,8 +648,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989894
-		objId: 301989894
+		id: q301989893
+		objId: 301989893
 		x: 263
 		y: 111
 		width: 44
@@ -662,8 +662,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989898
-		objId: 301989898
+		id: q301989895
+		objId: 301989895
 		x: 307
 		y: 111
 		width: 229
@@ -740,8 +740,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989901
-		objId: 301989901
+		id: q301989899
+		objId: 301989899
 		x: 185
 		y: 198
 		width: 56
@@ -754,8 +754,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989902
-		objId: 301989902
+		id: q301989897
+		objId: 301989897
 		x: 137
 		y: 251
 		width: 26
@@ -768,8 +768,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989897
-		objId: 301989897
+		id: q301989898
+		objId: 301989898
 		x: 137
 		y: 198
 		width: 48
@@ -782,8 +782,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989895
-		objId: 301989895
+		id: q301989889
+		objId: 301989889
 		x: 104
 		y: 226
 		width: 65
@@ -796,8 +796,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989896
-		objId: 301989896
+		id: q301989900
+		objId: 301989900
 		x: 263
 		y: 111
 		width: 44
@@ -810,8 +810,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989903
-		objId: 301989903
+		id: q301989901
+		objId: 301989901
 		x: 307
 		y: 111
 		width: 229
@@ -824,8 +824,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989900
-		objId: 301989900
+		id: q301989902
+		objId: 301989902
 		x: 293
 		y: 109
 		width: 99
@@ -838,8 +838,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989899
-		objId: 301989899
+		id: q301989890
+		objId: 301989890
 		x: 434
 		y: 32
 		width: 65
@@ -868,8 +868,8 @@ IGuiPage
 	}
 	IGuiGraphicView
 	{
-		id: q301989904
-		objId: 301989904
+		id: q301989903
+		objId: 301989903
 		x: 293
 		y: 109
 		width: 99

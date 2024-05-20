@@ -101,7 +101,7 @@
             <span class="button-text"> Dashboard</span>
         </button>
         <!--Nút chọn màn hình 3-->
-        <button id="btt_Screen_3" onclick="fn_ScreenChange('Screen_3', 'Screen_Main', 'Screen_1', 'Screen_2', 'Screen_4', 'Screen_logout');">
+        <button id="btt_Screen_3" onclick="fn_ScreenChange('Screen_3', 'Screen_Main', 'Screen_1', 'Screen_2', 'Screen_4', 'Screen_logout');fn_Table02_SQL_Show();">
             <i class="fas fa-bell"></i> 
             <span class="button-text"> Alarm</span>
         </button>
@@ -264,17 +264,13 @@
             <!--Date time piker-->
             <label id="lb_Search_Start2">From: </label>
             <input id="dtpk_Search_Start2" type="datetime-local">
-            <br /><br />
+            <br /><br />  
             <label id="lb_Search_End2">To: </label>
             <input id="dtpk_Search_End2" type="datetime-local">
-            <br /><br />
+            <br /><br />  
             <!--Nút tìm kiếm-->
-            <button id="btt_Search2" class="btn"></i>
+            <button id="btt_Search2" class="btn" onclick="fn_SQL2_By_Time();"></i>
                 <i class="fas fa-search"></i>Search
-            </button>
-            <!--Nút Xuất báo cáo Excel-->
-            <button id="btt_Excel2" class="btn"></i>
-                <i class="fas fa-file-export"></i>Export
             </button>
         </div>
         <div class="div_Table_02">
@@ -333,20 +329,20 @@
                 <!-- //////////////SỬA/LƯU THÔNG SỐ CÀI ĐẶT////////////// -->
                 <!--Các thông số điều chỉnh PID-->   
                 <label>SetPoint: </label>
-                <input id="tbx_SetPoint" disabled="disabled" type="text" />
-                <script>fn_IOFieldDataShow("WebSite_Setpoint", "tbx_SetPoint", 2)</script>
+                <input id="tbx_SetPoint2" disabled="disabled" type="text" />
+                <script>fn_IOFieldDataShow("WebSite_Setpoint", "tbx_SetPoint2", 2)</script>
                 <br /><br />                
                 <label>PID Gain: </label>
-                <input id="tbx_PID_Gain" disabled="disabled" type="text" />
-                <script>fn_IOFieldDataShow("WebSite_PID_Gain", "tbx_PID_Gain", 2)</script>
+                <input id="tbx_PID_Gain2" disabled="disabled" type="text" />
+                <script>fn_IOFieldDataShow("WebSite_PID_Gain", "tbx_PID_Gain2", 2)</script>
                 <br /><br />
                 <label>PID Ti: </label>
-                <input id="tbx_PID_Ti" disabled="disabled" type="text" />
-                <script>fn_IOFieldDataShow("WebSite_PID_Ti", "tbx_PID_Ti", 2)</script>
+                <input id="tbx_PID_Ti2" disabled="disabled" type="text" />
+                <script>fn_IOFieldDataShow("WebSite_PID_Ti", "tbx_PID_Ti2", 2)</script>
                 <br /><br />
                 <label>PID Td: </label>
-                <input id="tbx_PID_Td" disabled="disabled" type="text" />
-                <script>fn_IOFieldDataShow("WebSite_PID_Td", "tbx_PID_Td", 2)</script>
+                <input id="tbx_PID_Td2" disabled="disabled" type="text" />
+                <script>fn_IOFieldDataShow("WebSite_PID_Td", "tbx_PID_Td2", 2)</script>
                 <br /><br />
             </div>
             <div class="trend_OutPut" >
