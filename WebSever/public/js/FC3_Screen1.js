@@ -105,7 +105,7 @@ function fn_IOFieldDataShow(tag, IOField, tofix)
     });
 }
 
-function fn_IOFieldDataShow(tag, IOField, tofix)
+function fn_IOFieldDataShow2(tag, IOField, tofix)
 {
     socket.on(tag, function(data){
         if (tofix == 0 & Man_data_edditting != true)
@@ -159,7 +159,7 @@ function fn_SwitchControl(ObjectID, Tag) {
         }
     });
 
-    socket.on(Tag, function(fn_SymbolStatusdata) {
+    socket.on(Tag, function(data) {
         switchElement.checked = data;
         // Cập nhật giao diện của switch dựa trên trạng thái mới
         if (data) {
@@ -176,3 +176,9 @@ function fn_SwitchControl(ObjectID, Tag) {
     });
 }
 
+// Hàm chức năng nút sửa/lưu dữ liệu
+function fn_DataEdit(button1, button2)
+{
+    document.getElementById(button1).style.zIndex='1';  // Hiển nút 1
+    document.getElementById(button2).style.zIndex='0';  // Ẩn nút 2
+}

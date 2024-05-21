@@ -119,13 +119,12 @@ setInterval(
 function fn_read_data_scan(){
 	fn_tagRead();	// Đọc giá trị tag
     fn_sql_insert(); // Ghi dữ liệu vào SQL
-    sendDateTimeParts();// gửi thời gian
+    // sendDateTimeParts();// gửi thời gian
     fn_sql_insert_alarm(sqlins1_done, tagArr[15], tagArr[21], sql_Alarm_Trigger1);
     fn_sql_insert_alarm(sqlins2_done, tagArr[16], tagArr[22], sql_Alarm_Trigger2);
     fn_sql_insert_alarm(sqlins3_done, tagArr[17], tagArr[23], sql_Alarm_Trigger3);
     fn_sql_insert_alarm(sqlins4_done, tagArr[18], tagArr[24], sql_Alarm_Trigger4);
     fn_sql_insert_alarm(sqlins5_done, tagArr[19], tagArr[25], sql_Alarm_Trigger5);
-    fn_sql_insert_alarm(sqlins6_done, tagArr[20], tagArr[26], sql_Alarm_Trigger6);
 }
 
 //
@@ -167,11 +166,11 @@ function fn_sql_insert() {
 
     // Dữ liệu đọc lên từ các tag
     var data_Setpoint = "'" + tagArr[1] + "',";
-    var data_PID_Freq_Hz = "'" + tagArr[2] + "',"; // Corrected comma placement
-    var data_PV_Pressure = "'" + tagArr[3] + "',"; // Corrected comma placement
-    var data_PID_Gain = "'" + tagArr[4] + "',"; // Corrected comma placement
-    var data_PID_Ti = "'" + tagArr[5] + "',"; // Corrected comma placement
-    var data_PID_Td = "'" + tagArr[6] + "'"; // Corrected comma placement
+    var data_PID_Freq_Hz = "'" + tagArr[2] + "',"; 
+    var data_PV_Pressure = "'" + tagArr[3] + "',"; 
+    var data_PID_Gain = "'" + tagArr[4] + "',"; 
+    var data_PID_Ti = "'" + tagArr[5] + "',"; 
+    var data_PID_Td = "'" + tagArr[6] + "'"; 
 
     // Ghi dữ liệu vào SQL
     if (trigger == true & trigger != sqlins_done) { // Replaced single '&' with '&&'
@@ -210,11 +209,11 @@ function fn_sql_insert_alarm(sqlins_done, tagTrigger, sql_excute, tagName){
                 console.log(err);
             } else {
                 console.log("SQL - Ghi Alarm thành công")
-                fn_Data_Write(tagName, false);
             }
         });
     }
     sqlins_done = trigger;
+    fn_Data_Write(tagName, false);
 }
 
 // /////////////////////////THIẾT LẬP KẾT NỐI WEB/////////////////////////

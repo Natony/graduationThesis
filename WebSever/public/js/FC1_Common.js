@@ -99,3 +99,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initially collapse the sidebar
     collapseSidebar();
 }); 
+
+// Hàm hiển thị dữ liệu lên IO Field
+function fn_IOFieldDataShow(tag, IOField, tofix){
+    socket.on(tag,function(data){
+        if(tofix == 0){
+            document.getElementById(IOField).value = data;
+        } else{
+        document.getElementById(IOField).value = data.toFixed(tofix);
+        }
+    });
+}
+
+// Hàm chức năng nút sửa/lưu dữ liệu
+function fn_DataEdit(button1, button2)
+{
+    document.getElementById(button1).style.zIndex='1';  // Hiển nút 1
+    document.getElementById(button2).style.zIndex='0';  // Ẩn nút 2
+}
